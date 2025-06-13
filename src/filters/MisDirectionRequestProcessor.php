@@ -22,7 +22,6 @@ use SilverStripe\ErrorPage\ErrorPage;
 
 class MisDirectionRequestProcessor implements HTTPMiddleware
 {
-
     use Configurable;
     use Injectable;
 
@@ -64,7 +63,6 @@ class MisDirectionRequestProcessor implements HTTPMiddleware
         ];
 
         foreach (Director::config()->get('rules') as $segment => $controller) {
-
             // Retrieve the specific director rules.
 
             if (($position = strpos($segment ?? '', '$')) !== false) {
@@ -74,20 +72,17 @@ class MisDirectionRequestProcessor implements HTTPMiddleware
             // Determine if the current request matches a specific director rule.
 
             if ($segment && in_array($segment, $bypass) && (($requestURL === $segment) || (strpos($requestURL, "{$segment}/") === 0))) {
-
                 // Continue processing the response.
                 return $response;
             }
 
             if ($request->getVar('misdirected') || $request->getVar('direct')) {
-
                 // Continue processing the response.
                 return $response;
             }
         }
 
         if ($response) {
-
             $status = $response ? $response->getStatusCode() : null;
             $success = (($status >= 200) && ($status < 300));
             $error = ($status === 404);
@@ -96,7 +91,6 @@ class MisDirectionRequestProcessor implements HTTPMiddleware
             $replace = $this->config()->get('replace_default');
 
             if (($error || $enforce || $replace) && ($map = $this->service->getMappingByRequest($request))) {
-
                 $responseCode = $map->ResponseCode;
                 if ($responseCode == 0) {
                     $responseCode = 301;
@@ -113,7 +107,6 @@ class MisDirectionRequestProcessor implements HTTPMiddleware
                 $response->setBody('');
                 $response->redirect($link, $responseCode);
             } elseif ($error && ($fallback = $this->service->determineFallback($requestURL))) {
-
                 // Update the response code where appropriate.
 
                 $responseCode = $fallback['code'];

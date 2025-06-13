@@ -17,7 +17,6 @@ use Symbiote\Multisites\Multisites;
 
 class UnitTests extends SapphireTest
 {
-
     protected $usesDatabase = true;
 
     /**
@@ -26,7 +25,6 @@ class UnitTests extends SapphireTest
 
     public function testSimpleLinkMappings()
     {
-
         // Instantiate link mappings to use (the equivalent of does NOT include hostname).
 
         $first = LinkMapping::create(
@@ -79,7 +77,6 @@ class UnitTests extends SapphireTest
 
     public function testRegularExpressionReplacement()
     {
-
         // Instantiate a link mapping to use.
 
         $mapping = LinkMapping::create(
@@ -102,7 +99,6 @@ class UnitTests extends SapphireTest
 
     public function testRegularExpressionLinkMappings()
     {
-
         // Instantiate link mappings to use (the equivalent of does NOT include hostname).
 
         $first = LinkMapping::create(
@@ -155,7 +151,6 @@ class UnitTests extends SapphireTest
 
     public function testMappingPriority()
     {
-
         // Instantiate link mappings to use.
 
         $first = LinkMapping::create(

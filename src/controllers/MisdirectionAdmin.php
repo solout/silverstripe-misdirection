@@ -31,7 +31,6 @@ class MisdirectionAdmin extends ModelAdmin
      */
     public function getEditForm($ID = null, $fields = null)
     {
-
         $form = parent::getEditForm($ID, $fields);
         $gridfield = $form->Fields()->fieldByName($this->sanitiseClassName($this->modelClass));
         $gridfield->getConfig()->getComponentByType(GridFieldSortableHeader::class)->setFieldSorting([
@@ -53,7 +52,6 @@ class MisdirectionAdmin extends ModelAdmin
     public function getMappingChain()
     {
         if (singleton(LinkMapping::class)->canCreate()) {
-
             // Instantiate a request to handle the link mapping.
             $request = new HTTPRequest('GET', $this->getRequest()->getVar('map'));
 

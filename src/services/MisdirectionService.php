@@ -9,7 +9,7 @@ use SilverStripe\Control\HTTP;
 use SilverStripe\Core\ClassInfo;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Convert;
-use SilverStripe\ORM\ArrayList;
+use SilverStripe\Model\List\ArrayList;
 use SilverStripe\SiteConfig\SiteConfig;
 use Symbiote\Multisites\Multisites;
 
@@ -20,7 +20,6 @@ use Symbiote\Multisites\Multisites;
 
 class MisdirectionService
 {
-
     /**
      *	Unifies a URL so link mappings are predictable.
      *
@@ -30,7 +29,6 @@ class MisdirectionService
 
     public static function unify_URL($URL)
     {
-
         return strtolower(trim($URL ?? '', ' ?/'));
     }
 
@@ -43,7 +41,6 @@ class MisdirectionService
 
     public static function is_external_URL($URL)
     {
-
         $URL = trim($URL ?? '', '/?!"#$%&\'()*+,-.@:;<=>[\\]^_`{|}~');
         return preg_match('%^(?:(?:https?|ftp)://)(?:\S+(?::\S*)?@|\d{1,3}(?:\.\d{1,3}){3}|(?:(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)(?:\.(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)*(?:\.[a-z\x{00a1}-\x{ffff}]{2,6}))(?::\d+)?(?:[^\s]*)?$%iu', $URL);
     }
@@ -58,7 +55,6 @@ class MisdirectionService
 
     public function getMappingByRequest($request, $testing = false)
     {
-
         // Make sure a URL comes through correctly.
 
         $link = str_replace([
@@ -89,7 +85,6 @@ class MisdirectionService
 
     public function getMapping($URL, $host = null)
     {
-
         $URL = self::is_external_URL($URL) ? parse_url($URL, PHP_URL_PATH) : Director::makeRelative($URL);
         $URL = self::unify_URL($URL);
         $parts = explode('?', $URL);
@@ -100,8 +95,8 @@ class MisdirectionService
 
         // Enforce any hostname restriction that may have been defined.
 
-        if (is_null($host) && Controller::has_curr() && ($controller = Controller::curr())) {
-            $host = $controller->getRequest()->getHeader('Host');
+        if (is_null($host) && Controller::curr()) {
+            $host = Controller::curr()->getRequest()->getHeader('Host');
         }
         $temporary = $host;
         $host = Convert::raw2sql($host);
@@ -142,16 +137,13 @@ class MisdirectionService
             parse_str($parts[1], $queryParameters);
         }
         foreach ($matches as $match) {
-
             // Make sure the link mapping is live on the current stage.
 
             if ($match->isLive() !== 'false') {
-
                 // Ignore GET parameter matching for regular expressions, considering the special characters.
 
                 $matchParts = explode('?', $match->MappedLink);
                 if (($match->LinkType === 'Simple') && isset($matchParts[1])) {
-
                     // Make sure the GET parameters match in any order.
 
                     $matchParameters = [];
@@ -160,7 +152,6 @@ class MisdirectionService
                         return $match;
                     }
                 } else {
-
                     // Return the first link mapping when GET parameters aren't present.
 
                     $match->setMatchedURL($match->IncludesHostname ? "{$host}/{$URL}" : $URL);
@@ -185,7 +176,6 @@ class MisdirectionService
 
     public function getRecursiveMapping($map, $host = null, $testing = false)
     {
-
         // Keep track of the link mapping recursion.
 
         $counter = 1;
@@ -207,7 +197,6 @@ class MisdirectionService
         // Determine the next link mapping, immediately redirecting towards an external URL.
 
         while ((($map->RedirectType === 'Page') || !self::is_external_URL($redirect)) && ($next = $this->getMapping($redirect, $host))) {
-
             // Enforce a maximum number of redirects, preventing infinite recursion and inefficient link mappings.
 
             if ($counter === Config::inst()->get(MisDirectionRequestProcessor::class, 'maximum_requests')) {
@@ -248,11 +237,9 @@ class MisdirectionService
 
     public function determineFallback($URL)
     {
-
         // Make sure the CMS module is present.
 
         if (ClassInfo::exists(SiteTree::class) && $URL) {
-
             // Instantiate the required variables.
 
             $segments = explode('/', self::unify_URL($URL));
@@ -298,7 +285,6 @@ class MisdirectionService
                     'ParentID' => $parentID
                 ])->first();
                 if ($page) {
-
                     // Determine the home page URL when appropriate.
 
                     $link = ($page->Link() === Director::baseURL()) ? Controller::join_links(Director::baseURL(), 'home/') : $page->Link();
@@ -314,7 +300,6 @@ class MisdirectionService
                     }
                     $parentID = $page->ID;
                 } else {
-
                     // The bottom of the chain has been reached.
 
                     break;
@@ -326,7 +311,6 @@ class MisdirectionService
             if ($applicableRule) {
                 $link = null;
                 switch ($applicableRule) {
-
                     // Bypass the request filter.
 
                     case 'Nearest':
@@ -367,7 +351,6 @@ class MisdirectionService
 
     public function createPageMapping($URL, $redirectID, $priority = 1)
     {
-
         // Retrieve an already existing link mapping if one exists.
 
         $existing = LinkMapping::get()->filter([
@@ -401,7 +384,6 @@ class MisdirectionService
 
     public function createURLMapping($URL, $redirectURL, $priority = 1)
     {
-
         // Retrieve an already existing link mapping if one exists.
 
         $existing = LinkMapping::get()->filter([

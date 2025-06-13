@@ -8,7 +8,7 @@ _Maintained fork of [symbiote/silverstripe-misdirection](https://github.com/symb
 
 ## Requirement
 
-* Silverstripe 3.1, 4 or 5
+* Silverstripe 6
 
 This module does **not** require the CMS.
 

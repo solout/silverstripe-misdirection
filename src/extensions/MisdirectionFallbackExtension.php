@@ -3,11 +3,11 @@
 namespace nglasl\misdirection;
 
 use SilverStripe\Core\Config\Config;
+use SilverStripe\Core\Extension;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\HeaderField;
 use SilverStripe\Forms\TextField;
-use SilverStripe\ORM\DataExtension;
 use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\View\Requirements;
 
@@ -16,9 +16,8 @@ use SilverStripe\View\Requirements;
  *	@author Nathan Glasl <nathan@symbiote.com.au>
  */
 
-class MisdirectionFallbackExtension extends DataExtension
+class MisdirectionFallbackExtension extends Extension
 {
-
     private static $db = [
         'Fallback' => 'Varchar(255)',
         'FallbackLink' => 'Varchar(255)',
@@ -35,7 +34,10 @@ class MisdirectionFallbackExtension extends DataExtension
 
     public function updateCMSFields(FieldList $fields)
     {
-
+        $fields->removeByName('Fallback');
+        $fields->removeByName('FallbackLink');
+        $fields->removeByName('FallbackResponseCode');
+        
         if ($this->owner instanceof SiteConfig) {
             return $this->owner->updateFields($fields);
         }
@@ -43,7 +45,6 @@ class MisdirectionFallbackExtension extends DataExtension
 
     public function updateSettingsFields($fields)
     {
-
         // This extension only exists for pages.
 
         return $this->owner->updateFields($fields);
@@ -51,7 +52,6 @@ class MisdirectionFallbackExtension extends DataExtension
 
     public function updateFields($fields)
     {
-
         Requirements::javascript('greenhouse-creative/silverstripe-misdirection: client/javascript/misdirection-fallback.js');
 
         // Update any fields that are displayed when not viewing a page.

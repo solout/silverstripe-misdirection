@@ -8,6 +8,7 @@ use SilverStripe\Control\Director;
 use SilverStripe\Control\HTTP;
 use SilverStripe\Core\ClassInfo;
 use SilverStripe\Core\Config\Config;
+use SilverStripe\Core\Validation\ValidationResult;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\FieldGroup;
@@ -24,10 +25,8 @@ use Symbiote\Multisites\Multisites;
  *	Simple and regular expression link redirection definitions.
  *	@author Nathan Glasl <nathan@symbiote.com.au>
  */
-
 class LinkMapping extends DataObject
 {
-
     private static $table_name = 'LinkMapping';
 
     /**
@@ -108,13 +107,11 @@ class LinkMapping extends DataObject
 
     public function setMatchedURL($matchedURL)
     {
-
         $this->matchedURL = $matchedURL;
     }
 
     public function canView($member = null)
     {
-
         return true;
     }
 
@@ -150,13 +147,11 @@ class LinkMapping extends DataObject
 
     public function getTitle()
     {
-
         return $this->MappedLink;
     }
 
     public function getCMSFields()
     {
-
         $fields = parent::getCMSFields();
         Requirements::css('greenhouse-creative/silverstripe-misdirection: client/css/misdirection.css');
 
@@ -228,11 +223,9 @@ class LinkMapping extends DataObject
         // Allow redirect page configuration when the CMS module is present.
 
         if (ClassInfo::exists(SiteTree::class)) {
-
             // Allow redirect type configuration.
 
             if (!$this->RedirectType) {
-
                 // Initialise the default redirect type.
 
                 $this->RedirectType = 'Link';
@@ -292,14 +285,13 @@ class LinkMapping extends DataObject
         return $fields;
     }
 
-    public function validate()
+    public function validate(): ValidationResult
     {
-
         $result = parent::validate();
 
         // Determine whether a regular expression mapping is possible to match against.
 
-        if ($result->isValid() && ($this->LinkType === 'Regular Expression') && (!$this->MappedLink || !is_numeric(@preg_match("%{$this->MappedLink}%", null)))) {
+        if ($result->isValid() && ($this->LinkType === 'Regular Expression') && (!$this->MappedLink || !is_numeric(@preg_match("%{$this->MappedLink}%", '')))) {
             $result->addError('Invalid regular expression!');
         }
 
@@ -319,9 +311,8 @@ class LinkMapping extends DataObject
      *	Unify any URLs that may have been defined.
      */
 
-    public function onBeforeWrite()
+    protected function onBeforeWrite()
     {
-
         parent::onBeforeWrite();
 
         $this->MappedLink = MisdirectionService::unify_URL($this->MappedLink);
@@ -337,7 +328,6 @@ class LinkMapping extends DataObject
 
     public function getRedirectPage()
     {
-
         return (ClassInfo::exists(SiteTree::class) && $this->RedirectPageID) ? SiteTree::get()->byID($this->RedirectPageID) : null;
     }
 
@@ -349,23 +339,18 @@ class LinkMapping extends DataObject
 
     public function getLink()
     {
-
         if ($this->RedirectType === 'Page') {
-
             // Determine the home page URL when appropriate.
 
             if (($page = $this->getRedirectPage()) && ($link = ($page->Link() === Director::baseURL()) ? Controller::join_links(Director::baseURL(), 'home/') : $page->Link())) {
-
                 // This is to support multiple sites, where the absolute page URLs are treated as relative.
 
                 return MisdirectionService::is_external_URL($link) ? ltrim($link ?? '', '/') : $link;
             }
         } else {
-
             // Apply the regular expression pattern replacement.
 
             if ($link = (($this->LinkType === 'Regular Expression') && $this->matchedURL) ? preg_replace("%{$this->MappedLink}%i", $this->RedirectLink, $this->matchedURL) : $this->RedirectLink) {
-
                 // When appropriate, prepend the base URL to match a page redirection.
 
                 $prepended = Controller::join_links(Director::baseURL(), $link);
@@ -396,23 +381,18 @@ class LinkMapping extends DataObject
 
     public function getLinkHost()
     {
-
         if ($this->RedirectType === 'Page') {
-
             // Determine the home page URL when appropriate.
 
             if (($page = $this->getRedirectPage()) && ($link = ($page->Link() === Director::baseURL()) ? Controller::join_links(Director::baseURL(), 'home/') : $page->Link())) {
-
                 // Determine whether a redirection hostname exists.
 
                 return MisdirectionService::is_external_URL($link) ? parse_url($link, PHP_URL_HOST) : null;
             }
         } else {
-
             // Apply the regular expression pattern replacement.
 
             if ($link = (($this->LinkType === 'Regular Expression') && $this->matchedURL) ? preg_replace("%{$this->MappedLink}%i", $this->RedirectLink, $this->matchedURL) : $this->RedirectLink) {
-
                 // Determine whether a redirection hostname exists.
 
                 return MisdirectionService::is_external_URL($link) ? parse_url($link, PHP_URL_HOST) : null;
@@ -432,7 +412,6 @@ class LinkMapping extends DataObject
 
     public function getLinkSummary()
     {
-
         return ($link = $this->getLink()) ? trim($link ?? '', ' ?/') : '-';
     }
 
@@ -444,7 +423,6 @@ class LinkMapping extends DataObject
 
     public function getRedirectTypeSummary()
     {
-
         return $this->RedirectType ? $this->RedirectType : '-';
     }
 
@@ -456,7 +434,6 @@ class LinkMapping extends DataObject
 
     public function getRedirectPageTitle()
     {
-
         return (($this->RedirectType === 'Page') && ($page = $this->getRedirectPage())) ? $page->Title : '-';
     }
 
@@ -468,7 +445,6 @@ class LinkMapping extends DataObject
 
     public function isLive()
     {
-
         return ($this->RedirectType === 'Page') ? ($this->getRedirectPage() ? 'true' : 'false') : '-';
     }
 

@@ -11,14 +11,12 @@ use SilverStripe\Forms\GridField\GridField_HTMLProvider;
 
 class MisdirectionTesting implements GridField_HTMLProvider
 {
-
     /**
      *	Render the URL input and test button.
      */
 
     public function getHTMLFragments($gridfield)
     {
-
         return [
             'before' => "<div class='misdirection-testing admin'>
 				<div><strong>Test Link Mappings</strong></div>

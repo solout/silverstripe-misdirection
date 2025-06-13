@@ -20,7 +20,6 @@ use Symbiote\Multisites\Multisites;
 
 class FunctionalTests extends FunctionalTest
 {
-
     protected $usesDatabase = true;
 
     /**
@@ -35,7 +34,6 @@ class FunctionalTests extends FunctionalTest
 
     public function testRequestFilter()
     {
-
         // Instantiate link mappings to use.
 
         $mapping = LinkMapping::create(
@@ -57,7 +55,6 @@ class FunctionalTests extends FunctionalTest
         // The CMS module needs to be present to test page behaviour.
 
         if (ClassInfo::exists(SiteTree::class)) {
-
             // This is required to support multiple sites.
 
             $this->logInAs(DefaultAdminService::singleton()->findOrCreateDefaultAdmin());
@@ -92,7 +89,6 @@ class FunctionalTests extends FunctionalTest
         // The CMS module needs to be present to test page behaviour.
 
         if (ClassInfo::exists(SiteTree::class)) {
-
             // Update the default enforce misdirection.
 
             Config::modify()->set(MisDirectionRequestProcessor::class, 'enforce_misdirection', false);
@@ -121,7 +117,6 @@ class FunctionalTests extends FunctionalTest
             $this->assertEquals($response->getStatusCode(), 303);
             $this->assertEquals($response->getHeader('Location'), '/wrong?misdirected=1');
         } else {
-
             // The database needs to be cleaned up to prevent further testing conflict.
 
             $mapping->delete();

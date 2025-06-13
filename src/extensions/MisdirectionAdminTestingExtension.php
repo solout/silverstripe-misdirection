@@ -14,14 +14,12 @@ use SilverStripe\View\Requirements;
 
 class MisdirectionAdminTestingExtension extends Extension
 {
-
     /**
      *	Update the edit form to include the URL input and test button.
      */
 
     public function updateEditForm($form)
     {
-
         Requirements::css('greenhouse-creative/silverstripe-misdirection: client/css/misdirection.css');
 
         // Restrict this functionality to administrators.
@@ -30,7 +28,6 @@ class MisdirectionAdminTestingExtension extends Extension
         if (Permission::checkMember($user, 'ADMIN')) {
             $gridfield = $form->fields->items[0];
             if (isset($gridfield)) {
-
                 // Add the required HTML fragment.
 
                 Requirements::javascript('greenhouse-creative/silverstripe-misdirection: client/javascript/misdirection-testing.js');
