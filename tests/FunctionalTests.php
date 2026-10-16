@@ -60,7 +60,7 @@ class FunctionalTests extends FunctionalTest
 
             // This is required to support multiple sites.
 
-            $this->logInAs(DefaultAdminService::findOrCreateDefaultAdmin());
+            $this->logInAs(DefaultAdminService::singleton()->findOrCreateDefaultAdmin());
             $parentID = ClassInfo::exists(Multisites::class) ? Multisites::inst()->getCurrentSiteId() : 0;
 
             // Instantiate pages to use.
@@ -119,7 +119,7 @@ class FunctionalTests extends FunctionalTest
 
             $response = $this->get('wrong/page');
             $this->assertEquals($response->getStatusCode(), 303);
-            $this->assertEquals($response->getHeader('Location'), '/wrong/?misdirected=1');
+            $this->assertEquals($response->getHeader('Location'), '/wrong?misdirected=1');
         } else {
 
             // The database needs to be cleaned up to prevent further testing conflict.
