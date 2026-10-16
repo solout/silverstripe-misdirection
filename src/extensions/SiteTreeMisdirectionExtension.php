@@ -59,7 +59,7 @@ class SiteTreeMisdirectionExtension extends Extension
         $this->owner->extend('updateSiteTreeMisdirectionExtensionSettingsFields', $fields);
     }
 
-    public function validate(ValidationResult $result)
+    protected function updateValidate(ValidationResult $result)
     {
         // Retrieve the vanity mapping URL, where this is only possible using the POST variable.
 
