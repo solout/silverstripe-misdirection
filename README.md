@@ -1,6 +1,6 @@
 # [misdirection](https://packagist.org/packages/greenhouse-creative/silverstripe-misdirection)
 
-_The current release is **3.3.0**_
+_The current release is **4.0.0**_
 
 _Maintained fork of [symbiote/silverstripe-misdirection](https://github.com/symbiote/silverstripe-misdirection)._
 
@@ -8,7 +8,7 @@ _Maintained fork of [symbiote/silverstripe-misdirection](https://github.com/symb
 
 ## Requirement
 
-* Silverstripe 6
+* Silverstripe 6 (use 3.x for Silverstripe 4 or 5)
 
 This module does **not** require the CMS.
 
