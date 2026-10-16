@@ -22,7 +22,7 @@ class MisdirectionAdminTestingExtension extends Extension
     public function updateEditForm($form)
     {
 
-        Requirements::css('nglasl/silverstripe-misdirection: client/css/misdirection.css');
+        Requirements::css('greenhouse-creative/silverstripe-misdirection: client/css/misdirection.css');
 
         // Restrict this functionality to administrators.
 
@@ -33,7 +33,7 @@ class MisdirectionAdminTestingExtension extends Extension
 
                 // Add the required HTML fragment.
 
-                Requirements::javascript('nglasl/silverstripe-misdirection: client/javascript/misdirection-testing.js');
+                Requirements::javascript('greenhouse-creative/silverstripe-misdirection: client/javascript/misdirection-testing.js');
                 $configuration = $gridfield->config;
                 $configuration->addComponent(new MisdirectionTesting());
             }

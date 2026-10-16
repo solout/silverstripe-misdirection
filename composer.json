@@ -1,5 +1,5 @@
 {
-    "name": "nglasl/silverstripe-misdirection",
+    "name": "greenhouse-creative/silverstripe-misdirection",
     "description": "This module allows both simple and regular expression link redirections based on customisable mappings, either hooking into a page not found or replacing the default automated URL handling.",
     "type": "silverstripe-vendormodule",
     "keywords": [
@@ -13,7 +13,7 @@
         "redirection",
         "redirect"
     ],
-    "homepage": "https://github.com/symbiote/silverstripe-misdirection",
+    "homepage": "https://github.com/solout/silverstripe-misdirection",
     "license": "BSD-3-Clause",
     "authors": [{
         "name": "Nathan Glasl",
@@ -22,6 +22,9 @@
     "require": {
         "silverstripe/framework": "^4 || ^5",
         "silverstripe/vendor-plugin": "^1 || ^2"
+    },
+    "replace": {
+        "nglasl/silverstripe-misdirection": "self.version"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",

@@ -1,6 +1,8 @@
-# [misdirection](https://packagist.org/packages/nglasl/silverstripe-misdirection)
+# [misdirection](https://packagist.org/packages/greenhouse-creative/silverstripe-misdirection)
 
-_The current release is **3.1.1**_
+_The current release is **3.3.0**_
+
+_Maintained fork of [symbiote/silverstripe-misdirection](https://github.com/symbiote/silverstripe-misdirection)._
 
 > This module allows both simple and regular expression link redirections based on customisable mappings, either hooking into a page not found or replacing the default automated URL handling.
 
@@ -14,7 +16,7 @@ This module does **not** require the CMS.
 
 Install the module using composer:
 ```
-composer require nglasl/silverstripe-misdirection dev-master
+composer require greenhouse-creative/silverstripe-misdirection
 ```
 Then run dev/build.
 
@@ -31,7 +33,7 @@ These allow both simple and regular expression link redirections, and can be use
 The link mapping with the highest priority (followed by greatest specificity) will be used, and replaces the default automated URL handling out of the box. This default behaviour may be configured to only hook into a page not found:
 
 ```yaml
-nglasl\misdirection\MisdirectionRequestFilter:
+nglasl\misdirection\MisDirectionRequestProcessor:
   enforce_misdirection: false
 ```
 
@@ -68,7 +70,7 @@ When you want to see exactly what is happening behind the scenes for a given URL
 Once a maximum number of requests has been reached, the server will respond with a page not found. The following is the default configuration:
 
 ```yaml
-nglasl\misdirection\MisdirectionRequestFilter:
+nglasl\misdirection\MisDirectionRequestProcessor:
   maximum_requests: 9
 ```
 
@@ -83,7 +85,7 @@ It is possible to bypass the request filter completely by appending `?misdirecte
 This may be completely replaced, in which case legacy URLs will no longer resolve based on page version history.
 
 ```yaml
-nglasl\misdirection\MisdirectionRequestFilter:
+nglasl\misdirection\MisDirectionRequestProcessor:
   replace_default: true
 ```
 

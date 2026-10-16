@@ -52,7 +52,7 @@ class MisdirectionFallbackExtension extends DataExtension
     public function updateFields($fields)
     {
 
-        Requirements::javascript('nglasl/silverstripe-misdirection: client/javascript/misdirection-fallback.js');
+        Requirements::javascript('greenhouse-creative/silverstripe-misdirection: client/javascript/misdirection-fallback.js');
 
         // Update any fields that are displayed when not viewing a page.
 

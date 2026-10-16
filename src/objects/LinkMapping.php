@@ -158,7 +158,7 @@ class LinkMapping extends DataObject
     {
 
         $fields = parent::getCMSFields();
-        Requirements::css('nglasl/silverstripe-misdirection: client/css/misdirection.css');
+        Requirements::css('greenhouse-creative/silverstripe-misdirection: client/css/misdirection.css');
 
         // Remove any fields that are not required in their default state.
 
@@ -256,7 +256,7 @@ class LinkMapping extends DataObject
         // Use third party validation against an external URL.
 
         if ($this->canEdit()) {
-            Requirements::javascript('nglasl/silverstripe-misdirection: client/javascript/misdirection-link-mapping.js');
+            Requirements::javascript('greenhouse-creative/silverstripe-misdirection: client/javascript/misdirection-link-mapping.js');
             $redirect->push(CheckboxField::create(
                 'ValidateExternal',
                 'Validate External URL?'
